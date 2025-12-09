@@ -20,7 +20,7 @@ public class Book {
 
 	@ManyToOne
 	@JoinColumn(name = "username")
-	private Audience audience;
+	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "`showID`")

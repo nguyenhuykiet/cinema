@@ -15,10 +15,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Audience {
+public class User {
 
 	@Id
-	@Column(name = "username", length = 20)
+	@Column(name = "username", length = 20, nullable = false)
 	private String username;
 
 	@Column(name = "password", length = 20, nullable = false)
@@ -31,13 +31,17 @@ public class Audience {
 	@Column(name = "`dateOfBirth`")
 	private LocalDate dateOfBirth;
 
+	@Column(name = "role")
+	private String role;
+
 	@Column(name = "tel")
 	private String tel;
 
 	@Column(name = "email", unique = true)
+	@ToString.Exclude
 	private String email;
 
-	@OneToMany(mappedBy = "audience", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@ToString.Exclude
 	private List<Book> books;
 
