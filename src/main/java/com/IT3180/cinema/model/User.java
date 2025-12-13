@@ -2,19 +2,15 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "Audience")
+@Table(name = "`User`")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
 	@Id
@@ -31,15 +27,15 @@ public class User {
 	@Column(name = "`dateOfBirth`")
 	private LocalDate dateOfBirth;
 
-	@Column(name = "role")
+	@Column(name = "role", nullable = false)
 	private String role;
-
-	@Column(name = "tel")
-	private String tel;
 
 	@Column(name = "email", unique = true)
 	@ToString.Exclude
 	private String email;
+
+	@Column(name = "tel")
+	private String tel;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@ToString.Exclude

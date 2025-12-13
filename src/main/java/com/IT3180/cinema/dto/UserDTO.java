@@ -1,20 +1,21 @@
 package com.IT3180.cinema.dto;
 
-import com.IT3180.cinema.model.Book;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
+@AllArgsConstructor
 @Data
 public class UserDTO {
 	private String username;
-	private String password;
 	private String fullName;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
+
 	private String role;
-	private String tel;
 	private String email;
-	private List<Book> books;
+	private String tel;
 }

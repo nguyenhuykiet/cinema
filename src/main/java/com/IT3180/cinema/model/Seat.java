@@ -31,7 +31,7 @@ public class Seat {
 	private Boolean isEmpty;
 
 	@ManyToOne
-	@JoinColumn(name = "auditoriumName", referencedColumnName = "auditoriumName")
+	@JoinColumn(name = "`auditoriumName`", referencedColumnName = "`auditoriumName`")
 	private Auditorium auditorium;
 
 	@OneToMany(mappedBy = "seat")
