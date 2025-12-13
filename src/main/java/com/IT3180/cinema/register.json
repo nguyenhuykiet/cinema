@@ -1,0 +1,9 @@
+{
+  "username": "guest01",
+  "password": "password123",
+  "fullName": "Nguyen Van A",
+  "dateOfBirth": "2000-01-01",
+  "role": "guest",
+  "email": "nva@abc.com",
+  "tel": "0123456789"
+}

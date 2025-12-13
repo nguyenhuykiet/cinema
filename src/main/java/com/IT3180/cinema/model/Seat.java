@@ -27,9 +27,6 @@ public class Seat {
 	@Column(name = "`seatType`", length = 10)
 	private String seatType;
 
-	@Column(name = "`isEmpty`")
-	private Boolean isEmpty;
-
 	@ManyToOne
 	@JoinColumn(name = "`auditoriumName`", referencedColumnName = "`auditoriumName`")
 	private Auditorium auditorium;
