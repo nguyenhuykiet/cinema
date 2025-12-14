@@ -21,26 +21,22 @@ public class UserController {
 	@GetMapping("/profile")
 	public ResponseEntity<UserProfileDTO> getUserProfile(Authentication authentication) {
 		String username = authentication.getName();
-		try {
-			User user = userService.findByUsername(username);
-			UserProfileDTO userDTO = new UserProfileDTO(
-					user.getFullName(),
-					user.getDateOfBirth(),
-					user.getRole(),
-					user.getEmail(),
-					user.getTel());
-			return ResponseEntity.ok(userDTO);
-
-		} catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
+		System.out.println("USERNAME = " + authentication.getName());
+		User user = userService.findByUsername(username);
+		return ResponseEntity.ok(new UserProfileDTO(
+				user.getFullName(),
+				user.getDateOfBirth(),
+				user.getRole(),
+				user.getEmail(),
+				user.getTel()
+		));
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<String> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+	public ResponseEntity<String> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
 		try {
 			userService.registerNewUser(userRegisterDTO);
-			return new ResponseEntity<>("Đăng ký thành công", HttpStatus.CREATED);
+			return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
