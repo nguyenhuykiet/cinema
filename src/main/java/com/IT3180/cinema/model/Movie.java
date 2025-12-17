@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "Movie")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Movie {
 
 	@Id
@@ -22,7 +21,7 @@ public class Movie {
 	@Column(name = "`movieID`")
 	private Integer movieID;
 
-	@Column(name = "title", unique = true)
+	@Column(name = "title", nullable = false, unique = true)
 	private String title;
 
 	@Column(name = "directors")
@@ -46,8 +45,19 @@ public class Movie {
 	@Column(name = "synopsis")
 	private String synopsis;
 
-	@OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "movie")
 	@ToString.Exclude
 	private List<Show> shows;
+
+	public Movie(String title, String directors, String casts, String genres, LocalDate openingDay, Integer duration, Integer ageRating, String synopsis) {
+		this.title = title;
+		this.directors = directors;
+		this.casts = casts;
+		this.genres = genres;
+		this.openingDay = openingDay;
+		this.duration = duration;
+		this.ageRating = ageRating;
+		this.synopsis = synopsis;
+	}
 
 }

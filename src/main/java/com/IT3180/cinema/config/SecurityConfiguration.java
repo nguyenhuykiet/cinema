@@ -50,6 +50,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+						.requestMatchers(HttpMethod.PUT,"/movies/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/user/profile").authenticated()
 						.anyRequest().permitAll()
 				)

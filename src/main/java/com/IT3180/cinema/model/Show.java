@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,9 +21,6 @@ public class Show {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "`showID`")
 	private Integer showID;
-
-	@Column(name = "`showDate`")
-	private LocalDate showDate;
 
 	@Column(name = "`showTime`")
 	private LocalTime showTime;
