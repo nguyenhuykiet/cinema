@@ -12,31 +12,29 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/nguoi-dung")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/profile")
+	@GetMapping("/thong-tin")
 	public ResponseEntity<UserProfileDTO> getUserProfile(Authentication authentication) {
-		String username = authentication.getName();
-		System.out.println("USERNAME = " + authentication.getName());
-		User user = userService.findByUsername(username);
+		String email = authentication.getName();
+		User user = userService.findByEmail(email);
 		return ResponseEntity.ok(new UserProfileDTO(
 				user.getFullName(),
 				user.getDateOfBirth(),
-				user.getRole(),
 				user.getEmail(),
 				user.getTel()
 		));
 	}
 
-	@PostMapping("/register")
+	@PostMapping("/dang-ky")
 	public ResponseEntity<String> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
 		try {
 			userService.registerNewUser(userRegisterDTO);
-			return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+			return new ResponseEntity<>("Register successfully!", HttpStatus.CREATED);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

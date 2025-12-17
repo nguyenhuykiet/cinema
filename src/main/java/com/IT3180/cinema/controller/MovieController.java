@@ -15,28 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/phim")
 public class MovieController {
-
 	@Autowired
 	private MovieService movieService;
 
-	@GetMapping("/search/{title}")
-	public ResponseEntity<List<MovieDTO>> searchMovies(@RequestParam String title) {
-		List<Movie> movies = movieService.findByTitleContainingIgnoreCase(title);
-		List<MovieDTO> movieDTOS = new ArrayList<>();
-		for (Movie movie : movies) {
-			MovieDTO movieDTO = new MovieDTO(movie.getTitle(),
-					movie.getDirectors(),
-					movie.getCasts(),
-					movie.getGenres(),
-					movie.getOpeningDay(),
-					movie.getDuration(),
-					movie.getAgeRating(),
-					movie.getSynopsis());
-			movieDTOS.add(movieDTO);
-		}
-		return ResponseEntity.ok(movieDTOS);
+	@GetMapping("/tim-kiem/{title}")
+	public ResponseEntity<List<MovieDTO>> searchMoviesByTitle(@RequestParam String title) {
+		List<MovieDTO> foundMovies = movieService.findByTitle(title);
+		return ResponseEntity.ok(foundMovies);
 	}
 
 	@PostMapping()
@@ -58,5 +45,4 @@ public class MovieController {
 		movieService.deleteMovie(id);
 		return ResponseEntity.ok("Movie is deleted!");
 	}
-
 }

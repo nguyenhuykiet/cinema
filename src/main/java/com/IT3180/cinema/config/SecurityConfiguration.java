@@ -48,11 +48,12 @@ public class SecurityConfiguration {
 						session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				)
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-						.requestMatchers(HttpMethod.PUT,"/movies/**").permitAll()
-						.requestMatchers(HttpMethod.GET, "/user/profile").authenticated()
-						.anyRequest().permitAll()
+						.requestMatchers(HttpMethod.GET, "/user/profile").hasAnyRole("GUEST", "ADMIN")
+						.requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
+						.anyRequest().authenticated()
 				)
 				.httpBasic(Customizer.withDefaults());
 		return http.build();

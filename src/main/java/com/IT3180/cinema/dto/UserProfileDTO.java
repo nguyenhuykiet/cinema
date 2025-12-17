@@ -1,6 +1,9 @@
 package com.IT3180.cinema.dto;
 
+import com.IT3180.cinema.model.Role;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +19,6 @@ public class UserProfileDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
-	private String role;
 	private String email;
 	private String tel;
 }

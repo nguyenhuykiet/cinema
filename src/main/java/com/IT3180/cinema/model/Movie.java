@@ -2,20 +2,20 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Movie")
 @Data
 @NoArgsConstructor
 public class Movie {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "`movieID`")
@@ -30,8 +30,9 @@ public class Movie {
 	@Column(name = "casts")
 	private String casts;
 
-	@Column(name = "genres")
-	private String genres;
+	@ManyToMany
+	@JoinTable(name = "`Movie_Genre`", joinColumns = @JoinColumn(name = "`movieID`"), inverseJoinColumns = @JoinColumn(name = "`genreId`"))
+	private Set<Genre> genres = new HashSet<>();
 
 	@Column(name = "`openingDay`")
 	private LocalDate openingDay;
@@ -49,7 +50,7 @@ public class Movie {
 	@ToString.Exclude
 	private List<Show> shows;
 
-	public Movie(String title, String directors, String casts, String genres, LocalDate openingDay, Integer duration, Integer ageRating, String synopsis) {
+	public Movie(String title, String directors, String casts, Set<Genre> genres, LocalDate openingDay, Integer duration, Integer ageRating, String synopsis) {
 		this.title = title;
 		this.directors = directors;
 		this.casts = casts;
@@ -59,5 +60,4 @@ public class Movie {
 		this.ageRating = ageRating;
 		this.synopsis = synopsis;
 	}
-
 }

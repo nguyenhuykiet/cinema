@@ -1,9 +1,7 @@
 {
-  "username": "guest01",
+  "email": "admin@cnm.com",
   "password": "password123",
-  "fullName": "Nguyen Van A",
+  "fullName": "New Group 05",
   "dateOfBirth": "2000-01-01",
-  "role": "guest",
-  "email": "nva@abc.com",
   "tel": "0123456789"
 }

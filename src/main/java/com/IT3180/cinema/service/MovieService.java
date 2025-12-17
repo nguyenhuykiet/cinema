@@ -11,27 +11,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MovieService {
-
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Autowired
 	private ShowRepository showRepository;
 
-	public List<Movie> findByTitleContainingIgnoreCase(String title) {
-		return movieRepository.findByTitleContainingIgnoreCase(title);
-	}
+	public List<MovieDTO> findByTitle(String title) {
+		List<Movie> movieList = movieRepository.findByTitleContainingIgnoreCase(title);
+		List<MovieDTO> foundMovies = new ArrayList<>();
 
-	public List<Movie> findByGenresContainingIgnoreCase(String genre) {
-		return movieRepository.findByGenresContainingIgnoreCase(genre);
-	}
+		for (Movie movie : movieList) {
+			foundMovies.add(new MovieDTO(movie.getTitle(),
+					movie.getDirectors(),
+					movie.getCasts(),
+					movie.getGenres(),
+					movie.getOpeningDay(),
+					movie.getDuration(),
+					movie.getAgeRating(),
+					movie.getSynopsis()));
+		}
 
-	public boolean existsByTitle(String title) {
-		return movieRepository.existsByTitle(title);
+		return foundMovies;
 	}
 
 	public void addNewMovie(MovieDTO movieDTO) {
@@ -57,7 +63,7 @@ public class MovieService {
 		Movie movie = movieRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found!"));
 
-		if(movieRepository.existsByTitle(movieDTO.getTitle()))
+		if (movieRepository.existsByTitle(movieDTO.getTitle()))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Title already exists!");
 
 		movie.setTitle(movieDTO.getTitle());
@@ -84,5 +90,4 @@ public class MovieService {
 
 		movieRepository.delete(movie);
 	}
-
 }

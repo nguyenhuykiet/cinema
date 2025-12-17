@@ -1,12 +1,17 @@
 package com.IT3180.cinema.dto;
 
+import com.IT3180.cinema.model.Genre;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +23,7 @@ public class MovieDTO {
 
 	private String directors;
 	private String casts;
-	private String genres;
+	private Set<Genre> genres;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Future(message = "Invalid opening day!")

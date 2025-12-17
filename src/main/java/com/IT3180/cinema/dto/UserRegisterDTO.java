@@ -1,5 +1,7 @@
 package com.IT3180.cinema.dto;
 
+import com.IT3180.cinema.model.Role;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +14,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterDTO {
-	private String username;
+	private String email;
 	private String password;
 	private String fullName;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
-	private String role;
-	private String email;
 	private String tel;
 }
