@@ -1,7 +1,6 @@
 package com.IT3180.cinema.dto;
 
 import com.IT3180.cinema.model.Genre;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.*;
@@ -11,7 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class MovieDTO {
 
 	private String directors;
 	private String casts;
-	private Set<Genre> genres;
+	private List<String> genres;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Future(message = "Invalid opening day!")
@@ -41,4 +41,10 @@ public class MovieDTO {
 	@Size(max = 1000)
 	private String synopsis;
 
+	public List<Genre> convertToGenreList() {
+		List<Genre> genreList = new ArrayList<>();
+		for (String genre : genres)
+			genreList.add(new Genre(genre));
+		return genreList;
+	}
 }

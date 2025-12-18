@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Set;
+import java.text.Normalizer;
+import java.util.List;
 
 @Entity
 @Table(name = "Genre")
@@ -20,12 +21,20 @@ public class Genre {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
+	@Column(name = "slug", nullable = false, unique = true)
+	private String slug;
+
 	@ManyToMany
 	@ToString.Exclude
-	private Set<Movie> movies;
+	private List<Movie> movies;
 
-	public Genre(Integer genreID, String name) {
-		this.genreID = genreID;
+	private static String toSlug(String input) {
+		String noAccent = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		return noAccent.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+	}
+
+	public Genre(String name) {
 		this.name = name;
+		this.slug = toSlug(name);
 	}
 }

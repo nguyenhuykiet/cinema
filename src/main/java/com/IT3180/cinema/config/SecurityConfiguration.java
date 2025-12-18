@@ -50,9 +50,10 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.POST, "/user/register").permitAll()
 						.requestMatchers(HttpMethod.GET, "/user/profile").hasAnyRole("GUEST", "ADMIN")
-						.requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/movie/new").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/movie/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.httpBasic(Customizer.withDefaults());

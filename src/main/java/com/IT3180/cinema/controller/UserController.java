@@ -12,13 +12,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/nguoi-dung")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/thong-tin")
+	@GetMapping("/profile")
 	public ResponseEntity<UserProfileDTO> getUserProfile(Authentication authentication) {
 		String email = authentication.getName();
 		User user = userService.findByEmail(email);
@@ -30,7 +30,7 @@ public class UserController {
 		));
 	}
 
-	@PostMapping("/dang-ky")
+	@PostMapping("/register")
 	public ResponseEntity<String> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
 		try {
 			userService.registerNewUser(userRegisterDTO);

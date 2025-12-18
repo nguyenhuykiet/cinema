@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class GenreService {
@@ -21,23 +19,22 @@ public class GenreService {
 		return genreRepository.findAll();
 	}
 
-	public Set<MovieDTO> findMoviesByGenre(String name) {
-		Genre genre = genreRepository.findByName(name)
+	public List<MovieDTO> findMoviesByGenre(String slug) {
+		Genre genre = genreRepository.findBySlug(slug)
 				.orElseThrow(() -> new RuntimeException("Genre not found!"));
 
-		Set<Movie> movieSet = genre.getMovies();
-		Set<MovieDTO> foundMovies = new HashSet<>();
+		List<Movie> movieSet = genre.getMovies();
+		List<MovieDTO> foundMovies = new ArrayList<>();
 
-		for (Movie movie : movieSet) {
+		for (Movie movie : movieSet)
 			foundMovies.add(new MovieDTO(movie.getTitle(),
 					movie.getDirectors(),
 					movie.getCasts(),
-					movie.getGenres(),
+					movie.extractGenreNames(),
 					movie.getOpeningDay(),
 					movie.getDuration(),
 					movie.getAgeRating(),
 					movie.getSynopsis()));
-		}
 
 		return foundMovies;
 	}

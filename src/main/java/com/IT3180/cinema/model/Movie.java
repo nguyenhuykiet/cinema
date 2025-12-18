@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Movie")
@@ -32,7 +30,7 @@ public class Movie {
 
 	@ManyToMany
 	@JoinTable(name = "`Movie_Genre`", joinColumns = @JoinColumn(name = "`movieID`"), inverseJoinColumns = @JoinColumn(name = "`genreId`"))
-	private Set<Genre> genres = new HashSet<>();
+	private List<Genre> genres;
 
 	@Column(name = "`openingDay`")
 	private LocalDate openingDay;
@@ -50,7 +48,7 @@ public class Movie {
 	@ToString.Exclude
 	private List<Show> shows;
 
-	public Movie(String title, String directors, String casts, Set<Genre> genres, LocalDate openingDay, Integer duration, Integer ageRating, String synopsis) {
+	public Movie(String title, String directors, String casts, List<Genre> genres, LocalDate openingDay, Integer duration, Integer ageRating, String synopsis) {
 		this.title = title;
 		this.directors = directors;
 		this.casts = casts;
@@ -59,5 +57,9 @@ public class Movie {
 		this.duration = duration;
 		this.ageRating = ageRating;
 		this.synopsis = synopsis;
+	}
+
+	public List<String> extractGenreNames() {
+		return genres.stream().map(Genre::getName).toList();
 	}
 }

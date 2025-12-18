@@ -1,10 +1,10 @@
 {
-  "title": "Interstellar (Updated)",
+  "title": "Interstellar 2",
   "directors": "Christopher Nolan",
   "casts": "Matthew McConaughey, Anne Hathaway",
-  "genres": "Sci-Fi, Drama",
+  "genres": ["Thể loại 1", "Thể loại 2"],
   "openingDay": "2026-01-01",
   "duration": 169,
   "ageRating": 13,
-  "synopsis": "Updated synopsis"
+  "synopsis": "Synopsis"
 }

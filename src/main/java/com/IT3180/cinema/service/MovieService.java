@@ -1,7 +1,9 @@
 package com.IT3180.cinema.service;
 
 import com.IT3180.cinema.dto.MovieDTO;
+import com.IT3180.cinema.model.Genre;
 import com.IT3180.cinema.model.Movie;
+import com.IT3180.cinema.repository.GenreRepository;
 import com.IT3180.cinema.repository.MovieRepository;
 
 import com.IT3180.cinema.repository.ShowRepository;
@@ -20,35 +22,45 @@ public class MovieService {
 	private MovieRepository movieRepository;
 
 	@Autowired
+	private GenreRepository genreRepository;
+
+	@Autowired
 	private ShowRepository showRepository;
 
 	public List<MovieDTO> findByTitle(String title) {
 		List<Movie> movieList = movieRepository.findByTitleContainingIgnoreCase(title);
 		List<MovieDTO> foundMovies = new ArrayList<>();
 
-		for (Movie movie : movieList) {
+		for (Movie movie : movieList)
 			foundMovies.add(new MovieDTO(movie.getTitle(),
 					movie.getDirectors(),
 					movie.getCasts(),
-					movie.getGenres(),
+					movie.extractGenreNames(),
 					movie.getOpeningDay(),
 					movie.getDuration(),
 					movie.getAgeRating(),
 					movie.getSynopsis()));
-		}
 
 		return foundMovies;
 	}
 
 	public void addNewMovie(MovieDTO movieDTO) {
-		if (movieRepository.existsByTitle(movieDTO.getTitle())) {
+		if (movieRepository.existsByTitle(movieDTO.getTitle()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie already exists!");
+
+		List<Genre> genreListDTO = movieDTO.convertToGenreList();
+		List<Genre> genreList = new ArrayList<>();
+
+		for (Genre genreDTO : genreListDTO) {
+			Genre genre = genreRepository.findBySlug(genreDTO.getName())
+					.orElseGet(() -> genreRepository.save(new Genre(genreDTO.getName())));
+			genreList.add(genre);
 		}
 
 		Movie newMovie = new Movie(movieDTO.getTitle(),
 				movieDTO.getDirectors(),
 				movieDTO.getCasts(),
-				movieDTO.getGenres(),
+				genreList,
 				movieDTO.getOpeningDay(),
 				movieDTO.getDuration(),
 				movieDTO.getAgeRating(),
@@ -69,7 +81,7 @@ public class MovieService {
 		movie.setTitle(movieDTO.getTitle());
 		movie.setDirectors(movieDTO.getDirectors());
 		movie.setCasts(movieDTO.getCasts());
-		movie.setGenres(movieDTO.getGenres());
+		movie.setGenres(movieDTO.convertToGenreList());
 		movie.setOpeningDay(movieDTO.getOpeningDay());
 		movie.setDuration(movieDTO.getDuration());
 		movie.setAgeRating(movieDTO.getAgeRating());
@@ -84,9 +96,8 @@ public class MovieService {
 		Movie movie = movieRepository.findById(movieID)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found!"));
 
-		if (showRepository.existsByMovie_MovieID(movieID)) {
+		if (showRepository.existsByMovie_MovieID(movieID))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot delete movie!");
-		}
 
 		movieRepository.delete(movie);
 	}

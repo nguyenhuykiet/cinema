@@ -1,7 +1,5 @@
 package com.IT3180.cinema.dto;
 
-import com.IT3180.cinema.model.Role;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
