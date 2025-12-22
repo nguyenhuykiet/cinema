@@ -13,8 +13,8 @@ public class GenreController {
 	@Autowired
 	private GenreService genreService;
 
-	@GetMapping("/{genre}")
-	public List<MovieDTO> findMoviesByGenre(@PathVariable String genre) {
-		return genreService.findMoviesByGenre(genre);
+	@GetMapping("/{slug}")
+	public List<MovieDTO> findMoviesByGenre(@PathVariable String slug) {
+		return genreService.findMoviesByGenre(slug);
 	}
 }

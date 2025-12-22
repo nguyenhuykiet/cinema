@@ -52,7 +52,7 @@ public class MovieService {
 		List<Genre> genreList = new ArrayList<>();
 
 		for (Genre genreDTO : genreListDTO) {
-			Genre genre = genreRepository.findBySlug(genreDTO.getName())
+			Genre genre = genreRepository.findBySlug(genreDTO.getSlug())
 					.orElseGet(() -> genreRepository.save(new Genre(genreDTO.getName())));
 			genreList.add(genre);
 		}

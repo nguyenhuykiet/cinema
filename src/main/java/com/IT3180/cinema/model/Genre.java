@@ -24,17 +24,17 @@ public class Genre {
 	@Column(name = "slug", nullable = false, unique = true)
 	private String slug;
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "genres")
 	@ToString.Exclude
 	private List<Movie> movies;
-
-	private static String toSlug(String input) {
-		String noAccent = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-		return noAccent.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
-	}
 
 	public Genre(String name) {
 		this.name = name;
 		this.slug = toSlug(name);
+	}
+
+	private static String toSlug(String input) {
+		String noAccent = Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		return noAccent.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
 	}
 }
