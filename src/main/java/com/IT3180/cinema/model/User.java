@@ -23,7 +23,7 @@ public class User {
 	@ToString.Exclude
 	private String email;
 
-	@Column(name = "password", length = 100, nullable = false)
+	@Column(name = "password", nullable = false)
 	@ToString.Exclude
 	private String password;
 
@@ -42,7 +42,7 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@ToString.Exclude
-	private List<Book> books;
+	private List<Ticket> tickets;
 
 	public User(String email, String password, String fullName, LocalDate dateOfBirth, String tel) {
 		this.email = email;

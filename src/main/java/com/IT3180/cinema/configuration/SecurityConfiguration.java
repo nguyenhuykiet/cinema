@@ -1,4 +1,4 @@
-package com.IT3180.cinema.config;
+package com.IT3180.cinema.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,11 +49,14 @@ public class SecurityConfiguration {
 				)
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-						.requestMatchers(HttpMethod.GET, "/user/profile").hasAnyRole("GUEST", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/user/profile").authenticated()
 						.requestMatchers(HttpMethod.POST, "/movie/new").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/movie/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/genre/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auditorium/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/auditorium/**").hasRole("ADMIN")
 						.anyRequest().authenticated()
 				)
 				.httpBasic(Customizer.withDefaults());

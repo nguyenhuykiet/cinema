@@ -7,26 +7,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Book")
+@Table(name = "Ticket", uniqueConstraints = {@UniqueConstraint(columnNames = {"`showID`", "`seatID`"})})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
-
+public class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "`ticketID`")
 	private Integer ticketID;
 
 	@ManyToOne
-	@JoinColumn(name = "username")
+	@JoinColumn(name = "`userID`", nullable = false)
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "`showID`")
+	@JoinColumn(name = "`showID`", nullable = false)
 	private Show show;
 
 	@ManyToOne
-	@JoinColumn(name = "`seatID`")
+	@JoinColumn(name = "`seatID`", nullable = false)
 	private Seat seat;
 }

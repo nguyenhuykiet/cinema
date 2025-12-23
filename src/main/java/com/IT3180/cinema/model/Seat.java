@@ -2,7 +2,6 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,29 +9,28 @@ import lombok.ToString;
 import java.util.List;
 
 @Entity
-@Table(name = "Seat")
+@Table(name = "Seat", uniqueConstraints = @UniqueConstraint(columnNames = {"`auditoriumID`", "name"}))
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Seat {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "`seatID`")
 	private Integer seatID;
 
-	@Column(name = "`seatName`", length = 10, nullable = false)
-	private String seatName;
-
-	@Column(name = "`seatType`", length = 10)
-	private String seatType;
+	@Column(name = "name", nullable = false, length = 3)
+	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "`auditoriumName`", referencedColumnName = "`auditoriumName`")
+	@JoinColumn(name = "`auditoriumID`", referencedColumnName = "`auditoriumID`", nullable = false)
 	private Auditorium auditorium;
 
 	@OneToMany(mappedBy = "seat")
 	@ToString.Exclude
-	private List<Book> books;
+	private List<Ticket> tickets;
 
+	public Seat(String name, Auditorium auditorium) {
+		this.name = name;
+		this.auditorium = auditorium;
+	}
 }

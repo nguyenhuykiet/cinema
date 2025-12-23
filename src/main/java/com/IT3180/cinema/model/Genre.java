@@ -18,10 +18,10 @@ public class Genre {
 	@Column(name = "`genreID`")
 	private Integer genreID;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false, unique = true, length = 50)
 	private String name;
 
-	@Column(name = "slug", nullable = false, unique = true)
+	@Column(name = "slug", nullable = false, unique = true, length = 50)
 	private String slug;
 
 	@ManyToMany(mappedBy = "genres")

@@ -19,13 +19,13 @@ public class Movie {
 	@Column(name = "`movieID`")
 	private Integer movieID;
 
-	@Column(name = "title", nullable = false, unique = true)
+	@Column(name = "title", nullable = false, unique = true, length = 100)
 	private String title;
 
-	@Column(name = "directors")
+	@Column(name = "directors", length = 100)
 	private String directors;
 
-	@Column(name = "casts")
+	@Column(name = "casts", length = 200)
 	private String casts;
 
 	@ManyToMany

@@ -2,7 +2,6 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,20 +12,16 @@ import java.util.List;
 @Table(name = "Auditorium")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Auditorium {
-
 	@Id
-	@Column(name = "`auditoriumName`", length = 3)
-	private String auditoriumName;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "`auditoriumID`")
+	private Integer auditoriumID;
 
-	@Column(name = "capacity")
-	private int capacity;
+	@Column(name = "name", nullable = false, unique = true, length = 10)
+	private String name;
 
-	@Column(name = "status")
-	private String status;
-
-	@OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ToString.Exclude
 	private List<Seat> seats;
 
@@ -34,4 +29,7 @@ public class Auditorium {
 	@ToString.Exclude
 	private List<Show> shows;
 
+	public Auditorium(String name) {
+		this.name = name;
+	}
 }
