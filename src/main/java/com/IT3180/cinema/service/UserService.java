@@ -1,6 +1,6 @@
 package com.IT3180.cinema.service;
 
-import com.IT3180.cinema.dto.UserRegisterDTO;
+import com.IT3180.cinema.dto.user.UserRegisterDTO;
 import com.IT3180.cinema.model.Role;
 import com.IT3180.cinema.model.User;
 import com.IT3180.cinema.repository.UserRepository;
@@ -28,14 +28,14 @@ public class UserService {
 
 	@Transactional
 	public void registerNewUser(UserRegisterDTO userRegisterDTO) {
-		if(userRepository.existsByEmail(userRegisterDTO.getEmail()))
+		if (userRepository.existsByEmail(userRegisterDTO.getEmail()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists!");
 
 		User newUser = new User(userRegisterDTO.getEmail(),
-								passwordEncoder.encode(userRegisterDTO.getPassword()),
-								userRegisterDTO.getFullName(),
-								userRegisterDTO.getDateOfBirth(),
-								userRegisterDTO.getTel());
+				passwordEncoder.encode(userRegisterDTO.getPassword()),
+				userRegisterDTO.getFullName(),
+				userRegisterDTO.getDateOfBirth(),
+				userRegisterDTO.getTel());
 		newUser.setRole(Role.GUEST);
 
 		userRepository.save(newUser);

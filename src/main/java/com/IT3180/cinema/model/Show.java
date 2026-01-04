@@ -2,18 +2,20 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
 @Entity
-@Table(name = "Show")
-@Data
+@Table(name = "Show",
+		uniqueConstraints = @UniqueConstraint(
+				columnNames = {"`showTime`", "`auditoriumID`"}
+		))
 @NoArgsConstructor
+@Data
 public class Show {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +30,8 @@ public class Show {
 	@JoinColumn(name = "`auditoriumID`", referencedColumnName = "`auditoriumID`")
 	private Auditorium auditorium;
 
-	@Column(name = "`showDate`", nullable = false)
-	private LocalDate showDate;
-
 	@Column(name = "`showTime`", nullable = false)
-	private LocalTime showTime;
+	private LocalDateTime showTime;
 
 	@Column(name = "price", nullable = false)
 	private int price;
@@ -41,11 +40,9 @@ public class Show {
 	@ToString.Exclude
 	private List<Ticket> tickets;
 
-	public Show(Integer showID, Movie movie, Auditorium auditorium, LocalDate showDate, LocalTime showTime, int price) {
-		this.showID = showID;
+	public Show(Movie movie, Auditorium auditorium, LocalDateTime showTime, int price) {
 		this.movie = movie;
 		this.auditorium = auditorium;
-		this.showDate = showDate;
 		this.showTime = showTime;
 		this.price = price;
 	}

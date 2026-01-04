@@ -2,20 +2,20 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Entity
 @Table(name = "`User`")
-@Data
 @NoArgsConstructor
+@Data
 public class User {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "`userID`")
 	private Integer userID;
 

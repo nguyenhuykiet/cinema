@@ -1,22 +1,23 @@
-package com.IT3180.cinema.dto;
+package com.IT3180.cinema.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProfileDTO {
+@Data
+public class UserRegisterDTO {
+	private String email;
+	private String password;
 	private String fullName;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
-	private String email;
 	private String tel;
 }

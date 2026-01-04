@@ -4,16 +4,16 @@ import com.IT3180.cinema.model.Auditorium;
 import com.IT3180.cinema.model.Seat;
 import com.IT3180.cinema.repository.AuditoriumRepository;
 import com.IT3180.cinema.repository.SeatRepository;
-
 import com.IT3180.cinema.repository.ShowRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AuditoriumService {
@@ -31,7 +31,6 @@ public class AuditoriumService {
 
 	@Transactional
 	public void createNewAuditorium(String name) {
-
 		Auditorium auditorium = new Auditorium(name);
 
 		auditoriumRepository.save(auditorium);
@@ -52,7 +51,6 @@ public class AuditoriumService {
 
 	@Transactional
 	public void deleteAuditorium(Integer auditoriumID) {
-
 		Auditorium auditorium = auditoriumRepository.findById(auditoriumID)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Auditorium not found"));
 

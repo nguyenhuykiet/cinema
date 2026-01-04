@@ -2,17 +2,17 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Entity
 @Table(name = "Movie")
-@Data
 @NoArgsConstructor
+@Data
 public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +41,11 @@ public class Movie {
 	@Column(name = "`ageRating`")
 	private Integer ageRating;
 
-	@Column(name = "synopsis")
+	@Column(name = "synopsis", length = 1000)
 	private String synopsis;
+
+	@Column(name = "`posterUrl`", length = 100)
+	private String posterUrl;
 
 	@OneToMany(mappedBy = "movie")
 	@ToString.Exclude

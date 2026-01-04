@@ -2,16 +2,16 @@ package com.IT3180.cinema.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Entity
 @Table(name = "Auditorium")
-@Data
 @NoArgsConstructor
+@Data
 public class Auditorium {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

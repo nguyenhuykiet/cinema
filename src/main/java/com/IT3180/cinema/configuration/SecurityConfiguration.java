@@ -1,9 +1,14 @@
 package com.IT3180.cinema.configuration;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,13 +19,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -49,18 +51,12 @@ public class SecurityConfiguration {
 				)
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-						.requestMatchers(HttpMethod.GET, "/user/profile").authenticated()
-						.requestMatchers(HttpMethod.POST, "/movie/new").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/movie/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/genre/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auditorium/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/auditorium/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "show/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
-
 }

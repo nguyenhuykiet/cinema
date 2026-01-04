@@ -1,16 +1,22 @@
 package com.IT3180.cinema.controller;
 
-import com.IT3180.cinema.dto.MovieDTO;
+import com.IT3180.cinema.dto.movie.MovieDetailDTO;
+import com.IT3180.cinema.dto.movie.MovieSearchDTO;
+import com.IT3180.cinema.dto.show.ShowDTO;
 import com.IT3180.cinema.service.MovieService;
+import com.IT3180.cinema.service.ShowService;
 
-import jakarta.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/movie")
@@ -18,28 +24,46 @@ public class MovieController {
 	@Autowired
 	private MovieService movieService;
 
+	@Autowired
+	private ShowService showService;
+
+	@GetMapping("/{id}")
+	public MovieDetailDTO findById(@PathVariable Integer id) {
+		return movieService.findById(id);
+	}
+
 	@GetMapping("/search/{title}")
-	public ResponseEntity<List<MovieDTO>> searchMoviesByTitle(@PathVariable String title) {
-		List<MovieDTO> foundMovies = movieService.findByTitle(title);
-		return ResponseEntity.ok(foundMovies);
+	public List<MovieSearchDTO> searchMoviesByTitle(@PathVariable String title) {
+		return movieService.searchMoviesByTitle(title);
 	}
 
-	@PostMapping("/new")
-	public ResponseEntity<String> addNewMovie(@Valid @RequestBody MovieDTO movieDTO) {
-		movieService.addNewMovie(movieDTO);
-		return ResponseEntity.status(HttpStatus.CREATED).body("Movie is added!");
+	@PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<String> addNewMovie(@RequestPart("movie") MovieDetailDTO movieDetailDTO, @RequestPart("poster") MultipartFile poster) throws IOException {
+		if (poster.isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Poster image is required!");
+
+		movieService.addNewMovie(movieDetailDTO, poster);
+		return ResponseEntity.ok("Movie is added!");
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<String> updateMovie(@PathVariable Integer id, @Valid @RequestBody MovieDTO movieDTO) {
-		movieService.updateMovie(id, movieDTO);
-		return ResponseEntity.ok("Movie is updated!");
+
+	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<String> updateMovie(@PathVariable Integer id, @RequestPart("movie") MovieDetailDTO movieDetailDTO, @RequestPart(value = "poster", required = false) MultipartFile poster) throws IOException {
+		movieService.updateMovie(id, movieDetailDTO, poster);
+		return ResponseEntity.ok("Movie updated successfully!");
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteMovie(@PathVariable Integer id) {
-
 		movieService.deleteMovie(id);
 		return ResponseEntity.ok("Movie is deleted!");
+	}
+
+	@GetMapping("/{id}/show")
+	public List<ShowDTO> getShows(@PathVariable Integer id) {
+		return showService.getShowsByMovie(id);
 	}
 }

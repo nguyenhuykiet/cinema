@@ -1,23 +1,23 @@
-package com.IT3180.cinema.dto;
+package com.IT3180.cinema.dto.movie;
 
 import com.IT3180.cinema.model.Genre;
+import com.IT3180.cinema.model.Movie;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.*;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MovieDTO {
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import org.jspecify.annotations.NonNull;
+
+@NoArgsConstructor
+@Data
+public class MovieDetailDTO {
 	@NotBlank(message = "Title cannot blank!")
 	private String title;
 
@@ -26,7 +26,6 @@ public class MovieDTO {
 	private List<String> genres;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Future(message = "Invalid opening day!")
 	private LocalDate openingDay;
 
 	@NotNull(message = "Enter duration!")
@@ -40,6 +39,21 @@ public class MovieDTO {
 
 	@Size(max = 1000)
 	private String synopsis;
+
+	@Size(max = 100)
+	private String posterUrl;
+
+	public MovieDetailDTO(@NonNull Movie movie) {
+		this.title = movie.getTitle();
+		this.directors = movie.getDirectors();
+		this.casts = movie.getCasts();
+		this.genres = movie.extractGenreNames();
+		this.openingDay = movie.getOpeningDay();
+		this.duration = movie.getDuration();
+		this.ageRating = movie.getAgeRating();
+		this.synopsis = movie.getSynopsis();
+		this.posterUrl = movie.getPosterUrl();
+	}
 
 	public List<Genre> convertToGenreList() {
 		List<Genre> genreList = new ArrayList<>();

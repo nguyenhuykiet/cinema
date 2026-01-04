@@ -1,14 +1,14 @@
 package com.IT3180.cinema.service;
 
-import com.IT3180.cinema.dto.MovieDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.IT3180.cinema.dto.movie.MovieSearchDTO;
 import com.IT3180.cinema.model.Genre;
 import com.IT3180.cinema.model.Movie;
 import com.IT3180.cinema.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GenreService {
@@ -19,22 +19,15 @@ public class GenreService {
 		return genreRepository.findAll();
 	}
 
-	public List<MovieDTO> findMoviesByGenre(String slug) {
+	public List<MovieSearchDTO> findMoviesByGenre(String slug) {
 		Genre genre = genreRepository.findBySlug(slug)
 				.orElseThrow(() -> new RuntimeException("Genre not found!"));
 
 		List<Movie> movieSet = genre.getMovies();
-		List<MovieDTO> foundMovies = new ArrayList<>();
+		List<MovieSearchDTO> foundMovies = new ArrayList<>();
 
 		for (Movie movie : movieSet)
-			foundMovies.add(new MovieDTO(movie.getTitle(),
-					movie.getDirectors(),
-					movie.getCasts(),
-					movie.extractGenreNames(),
-					movie.getOpeningDay(),
-					movie.getDuration(),
-					movie.getAgeRating(),
-					movie.getSynopsis()));
+			foundMovies.add(new MovieSearchDTO(movie));
 
 		return foundMovies;
 	}
