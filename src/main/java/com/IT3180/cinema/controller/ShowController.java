@@ -20,11 +20,21 @@ public class ShowController {
 	@Autowired
 	private ShowService showService;
 
+	/**
+	 * Thông tin suất chiếu
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{id}")
 	public ShowDTO findById(@PathVariable Integer id) {
 		return showService.findById(id);
 	}
 
+	/**
+	 * Tạo suất chiếu
+	 * @param showDTO
+	 * @return
+	 */
 	@PostMapping("/new")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> createShow(@Valid @RequestBody ShowDTO showDTO) {
@@ -32,6 +42,11 @@ public class ShowController {
 		return ResponseEntity.status(HttpStatus.CREATED).body("Show created successfully!");
 	}
 
+	/**
+	 * Xoá suất chiếu
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteShow(@PathVariable Integer id) {
@@ -39,6 +54,11 @@ public class ShowController {
 		return ResponseEntity.ok("Show deleted successfully!");
 	}
 
+	/**
+	 * Lấy sơ đồ ghế
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{id}/seat")
 	public List<SeatDTO> getSeats(@PathVariable Integer id) {
 		return showService.getSeatsOfShow(id);

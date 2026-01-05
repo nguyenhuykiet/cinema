@@ -27,16 +27,33 @@ public class MovieController {
 	@Autowired
 	private ShowService showService;
 
+	/**
+	 * Hiển thị thông tin phim chi tiết
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{id}")
 	public MovieDetailDTO findById(@PathVariable Integer id) {
 		return movieService.findById(id);
 	}
 
+	/**
+	 * Tìm kiếm phim
+	 * @param title
+	 * @return
+	 */
 	@GetMapping("/search/{title}")
 	public List<MovieSearchDTO> searchMoviesByTitle(@PathVariable String title) {
 		return movieService.searchMoviesByTitle(title);
 	}
 
+	/**
+	 * Thêm phim mới
+	 * @param movieDetailDTO
+	 * @param poster
+	 * @return
+	 * @throws IOException
+	 */
 	@PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addNewMovie(@RequestPart("movie") MovieDetailDTO movieDetailDTO, @RequestPart("poster") MultipartFile poster) throws IOException {
@@ -48,6 +65,14 @@ public class MovieController {
 	}
 
 
+	/**
+	 * Cập nhật thông tin phim
+	 * @param id
+	 * @param movieDetailDTO
+	 * @param poster
+	 * @return
+	 * @throws IOException
+	 */
 	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> updateMovie(@PathVariable Integer id, @RequestPart("movie") MovieDetailDTO movieDetailDTO, @RequestPart(value = "poster", required = false) MultipartFile poster) throws IOException {
@@ -55,6 +80,11 @@ public class MovieController {
 		return ResponseEntity.ok("Movie updated successfully!");
 	}
 
+	/**
+	 * Xoá phim
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteMovie(@PathVariable Integer id) {
@@ -62,6 +92,11 @@ public class MovieController {
 		return ResponseEntity.ok("Movie is deleted!");
 	}
 
+	/**
+	 * Lấy danh sách suất chiếu của phim
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{id}/show")
 	public List<ShowDTO> getShows(@PathVariable Integer id) {
 		return showService.getShowsByMovie(id);

@@ -14,6 +14,11 @@ public class GenreController {
 	@Autowired
 	private GenreService genreService;
 
+	/**
+	 * Liệt kê phim theo thể loại
+	 * @param slug
+	 * @return
+	 */
 	@GetMapping("/{slug}")
 	public List<MovieSearchDTO> findMoviesByGenre(@PathVariable String slug) {
 		return genreService.findMoviesByGenre(slug);

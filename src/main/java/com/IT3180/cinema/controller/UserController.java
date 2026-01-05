@@ -18,6 +18,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Xem thông tin cá nhân
+	 * @param authentication
+	 * @return
+	 */
 	@GetMapping("/profile")
 	@PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
 	public UserProfileDTO getUserProfile(Authentication authentication) {
@@ -26,6 +31,11 @@ public class UserController {
 		return new UserProfileDTO(user);
 	}
 
+	/**
+	 * Đăng ký tài khoản
+	 * @param userRegisterDTO
+	 * @return
+	 */
 	@PostMapping("/register")
 	public ResponseEntity<String> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
 		try {

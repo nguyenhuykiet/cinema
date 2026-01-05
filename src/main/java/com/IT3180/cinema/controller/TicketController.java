@@ -25,6 +25,12 @@ public class TicketController {
 	@Autowired
 	private UserRepository userRepository;
 
+	/**
+	 * Đặt vé
+	 * @param request
+	 * @param authentication
+	 * @return
+	 */
 	@PostMapping("/book")
 	@PreAuthorize("hasRole('GUEST')")
 	public ResponseEntity<String> bookTicket(@RequestBody BookingRequest request, Authentication authentication) {
@@ -32,6 +38,12 @@ public class TicketController {
 		return ResponseEntity.ok("Booking successful!");
 	}
 
+	/**
+	 * Huỷ vé
+	 * @param id
+	 * @param authentication
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('GUEST')")
 	public ResponseEntity<String> cancelTicket(@PathVariable Integer id, Authentication authentication) {
@@ -43,6 +55,11 @@ public class TicketController {
 		return ResponseEntity.ok("Ticket cancelled!");
 	}
 
+	/**
+	 * Xem vé đã đặt
+	 * @param authentication
+	 * @return
+	 */
 	@GetMapping("/my")
 	@PreAuthorize("hasRole('GUEST')")
 	public List<TicketDTO> myTickets(Authentication authentication) {

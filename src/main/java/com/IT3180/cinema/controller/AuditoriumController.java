@@ -17,6 +17,11 @@ public class AuditoriumController {
 	@Autowired
 	private AuditoriumService auditoriumService;
 
+	/**
+	 * Tạo phòng chiếu
+	 * @param auditoriumDTO
+	 * @return
+	 */
 	@PostMapping("/new")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> createNewAuditorium(@Valid @RequestBody AuditoriumDTO auditoriumDTO) {
@@ -24,6 +29,11 @@ public class AuditoriumController {
 		return ResponseEntity.status(HttpStatus.CREATED).body("Auditorium is created!");
 	}
 
+	/**
+	 * Xoá phòng chiếu
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteAuditorium(@PathVariable Integer id) {
