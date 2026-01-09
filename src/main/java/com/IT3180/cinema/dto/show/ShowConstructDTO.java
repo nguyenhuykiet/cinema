@@ -15,7 +15,7 @@ import org.jspecify.annotations.NonNull;
 
 @NoArgsConstructor
 @Data
-public class ShowDTO {
+public class ShowConstructDTO {
 	@NotNull
 	private Integer movieId;
 
@@ -29,7 +29,7 @@ public class ShowDTO {
 	@Positive
 	private int price;
 
-	public ShowDTO(@NonNull Show show) {
+	public ShowConstructDTO(@NonNull Show show) {
 		this.movieId = show.getMovie().getMovieID();
 		this.auditoriumId = show.getAuditorium().getAuditoriumID();
 		this.showTime = show.getShowTime();

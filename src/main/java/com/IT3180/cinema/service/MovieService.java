@@ -117,7 +117,6 @@ public class MovieService {
 
 	@Transactional
 	public void deleteMovie(Integer movieID) {
-
 		Movie movie = movieRepository.findById(movieID)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found!"));
 

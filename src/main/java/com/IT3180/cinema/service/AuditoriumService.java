@@ -1,5 +1,6 @@
 package com.IT3180.cinema.service;
 
+import com.IT3180.cinema.dto.auditorium.AuditoriumDTO;
 import com.IT3180.cinema.model.Auditorium;
 import com.IT3180.cinema.model.Seat;
 import com.IT3180.cinema.repository.AuditoriumRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,6 +30,23 @@ public class AuditoriumService {
 
 	@Autowired
 	private ShowRepository showRepository;
+
+	public AuditoriumDTO findById(Integer id) {
+		Auditorium auditorium = auditoriumRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("Auditorium not found!"));
+
+		return new AuditoriumDTO(auditorium);
+	}
+
+	public List<AuditoriumDTO> findAll() {
+		List<Auditorium> auditoriums = auditoriumRepository.findAll();
+		List<AuditoriumDTO> auditoriumDTOs = new ArrayList<>();
+
+		for (Auditorium auditorium : auditoriums)
+			auditoriumDTOs.add(new AuditoriumDTO(auditorium));
+
+		return auditoriumDTOs;
+	}
 
 	@Transactional
 	public void createNewAuditorium(String name) {

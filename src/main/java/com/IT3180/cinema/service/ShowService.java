@@ -1,7 +1,8 @@
 package com.IT3180.cinema.service;
 
 import com.IT3180.cinema.dto.seat.SeatDTO;
-import com.IT3180.cinema.dto.show.ShowDTO;
+import com.IT3180.cinema.dto.show.ShowConstructDTO;
+import com.IT3180.cinema.dto.show.ShowDetailDTO;
 import com.IT3180.cinema.model.Auditorium;
 import com.IT3180.cinema.model.Movie;
 import com.IT3180.cinema.model.Show;
@@ -12,6 +13,7 @@ import com.IT3180.cinema.repository.TicketRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +36,27 @@ public class ShowService {
 	@Autowired
 	private TicketRepository ticketRepository;
 
-	public ShowDTO findById(Integer id) {
+	public ShowDetailDTO findById(Integer id) {
 		Show show = showRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Show not found!"));
-		return new ShowDTO(show);
+		return new ShowDetailDTO(show);
 	}
 
 	@Transactional
-	public void createShow(ShowDTO showDTO) {
-		Movie movie = movieRepository.findById(showDTO.getMovieId())
+	public void createShow(ShowConstructDTO showConstructDTO) {
+		Movie movie = movieRepository.findById(showConstructDTO.getMovieId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found!"));
 
-		Auditorium auditorium = auditoriumRepository.findById(showDTO.getAuditoriumId())
+		Auditorium auditorium = auditoriumRepository.findById(showConstructDTO.getAuditoriumId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Auditorium not found!"));
 
-		if (showRepository.existsByAuditoriumAndShowTime(auditorium, showDTO.getShowTime()))
+		if (showRepository.existsByAuditoriumAndShowTime(auditorium, showConstructDTO.getShowTime()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Show already exists in this auditorium at that time!");
 
-		if (showDTO.getShowTime().toLocalDate().isBefore(LocalDate.now()))
+		if (showConstructDTO.getShowTime().toLocalDate().isBefore(LocalDate.now()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Show date must be today or later!");
 
-		Show show = new Show(movie, auditorium, showDTO.getShowTime(), showDTO.getPrice());
+		Show show = new Show(movie, auditorium, showConstructDTO.getShowTime(), showConstructDTO.getPrice());
 
 		showRepository.save(show);
 	}
@@ -73,8 +75,14 @@ public class ShowService {
 		showRepository.delete(show);
 	}
 
-	public List<ShowDTO> getShowsByMovie(Integer movieId) {
-		return showRepository.findByMovie_MovieID(movieId).stream().map(ShowDTO::new).toList();
+	public List<ShowDetailDTO> getShowsByMovie(Integer movieId) {
+		List<Show> shows = showRepository.findByMovie_MovieID(movieId);
+		List<ShowDetailDTO> showDetailDTOS = new ArrayList<>();
+
+		for (Show show : shows)
+			showDetailDTOS.add(new ShowDetailDTO(show));
+
+		return showDetailDTOS;
 	}
 
 	public List<SeatDTO> getSeatsOfShow(Integer showId) {
@@ -83,5 +91,9 @@ public class ShowService {
 
 		return show.getAuditorium().getSeats().stream()
 				.map(seat -> new SeatDTO(seat.getName(), ticketRepository.existsByShow_ShowIDAndSeat_SeatID(showId, seat.getSeatID()))).toList();
+	}
+
+	public List<ShowDetailDTO> getShowsByAuditorium(Integer auditoriumId) {
+		return showRepository.findByAuditorium_AuditoriumIDOrderByShowTimeAsc(auditoriumId).stream().map(ShowDetailDTO::new).toList();
 	}
 }

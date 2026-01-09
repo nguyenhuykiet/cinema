@@ -18,4 +18,6 @@ public interface ShowRepository extends JpaRepository<Show, Integer> {
 	boolean existsByAuditoriumAndShowTime(Auditorium auditorium, LocalDateTime showTime);
 
 	List<Show> findByMovie_MovieID(Integer movieID);
+
+	List<Show> findByAuditorium_AuditoriumIDOrderByShowTimeAsc(Integer auditoriumId);
 }

@@ -1,7 +1,8 @@
 package com.IT3180.cinema.controller;
 
 import com.IT3180.cinema.dto.seat.SeatDTO;
-import com.IT3180.cinema.dto.show.ShowDTO;
+import com.IT3180.cinema.dto.show.ShowConstructDTO;
+import com.IT3180.cinema.dto.show.ShowDetailDTO;
 import com.IT3180.cinema.service.ShowService;
 
 import jakarta.validation.Valid;
@@ -26,19 +27,19 @@ public class ShowController {
 	 * @return
 	 */
 	@GetMapping("/{id}")
-	public ShowDTO findById(@PathVariable Integer id) {
+	public ShowDetailDTO findById(@PathVariable Integer id) {
 		return showService.findById(id);
 	}
 
 	/**
 	 * Tạo suất chiếu
-	 * @param showDTO
+	 * @param showConstructDTO
 	 * @return
 	 */
 	@PostMapping("/new")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> createShow(@Valid @RequestBody ShowDTO showDTO) {
-		showService.createShow(showDTO);
+	public ResponseEntity<String> createShow(@Valid @RequestBody ShowConstructDTO showConstructDTO) {
+		showService.createShow(showConstructDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body("Show created successfully!");
 	}
 

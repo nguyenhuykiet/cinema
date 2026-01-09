@@ -18,6 +18,8 @@ import org.jspecify.annotations.NonNull;
 @NoArgsConstructor
 @Data
 public class MovieDetailDTO {
+	private Integer movieID;
+
 	@NotBlank(message = "Title cannot blank!")
 	private String title;
 
@@ -44,6 +46,7 @@ public class MovieDetailDTO {
 	private String posterUrl;
 
 	public MovieDetailDTO(@NonNull Movie movie) {
+		this.movieID = movie.getMovieID();
 		this.title = movie.getTitle();
 		this.directors = movie.getDirectors();
 		this.casts = movie.getCasts();

@@ -2,7 +2,7 @@ package com.IT3180.cinema.controller;
 
 import com.IT3180.cinema.dto.movie.MovieDetailDTO;
 import com.IT3180.cinema.dto.movie.MovieSearchDTO;
-import com.IT3180.cinema.dto.show.ShowDTO;
+import com.IT3180.cinema.dto.show.ShowDetailDTO;
 import com.IT3180.cinema.service.MovieService;
 import com.IT3180.cinema.service.ShowService;
 
@@ -98,7 +98,7 @@ public class MovieController {
 	 * @return
 	 */
 	@GetMapping("/{id}/show")
-	public List<ShowDTO> getShows(@PathVariable Integer id) {
+	public List<ShowDetailDTO> getShows(@PathVariable Integer id) {
 		return showService.getShowsByMovie(id);
 	}
 }
