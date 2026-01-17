@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cinema</title>
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="barLeft">
+      <div class="brand">Cinema</div>
+      <div class="search">
+        <input id="q" placeholder="Search movies by title" />
+        <button id="btnSearch">Search</button>
+        <button id="btnAll">All</button>
+      </div>
+    </div>
+    <div class="barRight">
+      <button id="btnAuth">Account</button>
+      <button id="btnAdmin" class="hidden">Admin</button>
+      <button id="btnMyTickets" class="hidden">My tickets</button>
+      <button id="btnLogout" class="hidden">Logout</button>
+      <div id="userInfo" class="muted" style="margin-left:10px"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="viewMovies" class="view">
+      <h2>Movies</h2>
+      <div id="movies" class="grid"></div>
+      <div id="moviesEmpty" class="muted hidden">No movies found</div>
+    </section>
+
+    <section id="viewMovie" class="view hidden">
+      <button class="link" id="backToMovies">Back</button>
+      <div id="movieDetail" class="card"></div>
+      <h3>Shows</h3>
+      <div id="shows" class="list"></div>
+      <div id="showsEmpty" class="muted hidden">No shows</div>
+    </section>
+
+    <section id="viewSeats" class="view hidden">
+      <button class="link" id="backToMovie">Back</button>
+      <div id="seatHeader" class="card"></div>
+      <h3>Select a seat</h3>
+      <div id="seats" class="seats"></div>
+      <div id="seatHint" class="muted">Booked seats are disabled</div>
+    </section>
+
+    <section id="viewMyTickets" class="view hidden">
+      <button class="link" id="backFromTickets">Back</button>
+      <h2>My tickets</h2>
+      <div id="tickets" class="list"></div>
+      <div id="ticketsEmpty" class="muted hidden">No tickets</div>
+    </section>
+
+    <section id="viewAdmin" class="view hidden">
+      <button class="link" id="backFromAdmin">Back</button>
+      <h2>Admin panel</h2>
+
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-weight:700;margin-bottom:10px">Create auditorium</div>
+        <div class="row" style="gap:10px;align-items:flex-end">
+          <div style="flex:1;min-width:220px">
+            <label>Name</label>
+            <input id="admAudName" placeholder="Auditorium name" />
+          </div>
+          <button id="admAudCreate" type="button">Create</button>
+          <div id="admAudMsg" class="msg"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div style="font-weight:700">Auditoriums</div>
+          <button id="admAudRefresh" type="button">Refresh</button>
+        </div>
+        <div id="admAudList" class="list" style="margin-top:10px"></div>
+        <div id="admAudEmpty" class="muted hidden" style="margin-top:10px">No auditoriums</div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-weight:700;margin-bottom:10px">Create show</div>
+        <div class="row" style="gap:10px;align-items:flex-end;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label>Movie</label>
+            <select id="admShowMovie"></select>
+          </div>
+          <div style="flex:1;min-width:220px">
+            <label>Auditorium</label>
+            <select id="admShowAud"></select>
+          </div>
+          <div style="min-width:220px">
+            <label>Show time</label>
+            <input id="admShowTime" type="datetime-local" />
+          </div>
+          <div style="min-width:140px">
+            <label>Price</label>
+            <input id="admShowPrice" type="number" min="0" step="1" />
+          </div>
+          <button id="admShowCreate" type="button">Create</button>
+          <div id="admShowMsg" class="msg"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div style="font-weight:700">Shows for movie</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select id="admShowMovieForList"></select>
+            <button id="admShowRefresh" type="button">Refresh</button>
+          </div>
+        </div>
+        <div id="admShowList" class="list" style="margin-top:10px"></div>
+        <div id="admShowEmpty" class="muted hidden" style="margin-top:10px">No shows</div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-weight:700;margin-bottom:10px">Create movie</div>
+        <div class="muted" style="margin-bottom:10px">Poster upload is required</div>
+
+        <div class="row" style="gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label>Title</label>
+            <input id="admMovieTitle" />
+          </div>
+          <div style="min-width:180px">
+            <label>Duration (minutes)</label>
+            <input id="admMovieDuration" type="number" min="1" step="1" />
+          </div>
+          <div style="min-width:180px">
+            <label>Age rating</label>
+            <input id="admMovieAge" placeholder="0 to 18" />
+          </div>
+        </div>
+
+        <div class="row" style="gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label>Directors</label>
+            <input id="admMovieDirectors" />
+          </div>
+          <div style="flex:1;min-width:220px">
+            <label>Casts</label>
+            <input id="admMovieCasts" />
+          </div>
+          <div style="min-width:220px">
+            <label>Opening day</label>
+            <input id="admMovieOpen" type="date" />
+          </div>
+        </div>
+
+        <div class="row" style="gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label>Genres (comma separated)</label>
+            <input id="admMovieGenres" placeholder="Action, Comedy" />
+          </div>
+          <div style="min-width:260px">
+            <label>Poster file</label>
+            <input id="admMoviePoster" type="file" accept="image/*" />
+          </div>
+        </div>
+
+        <label>Synopsis</label>
+        <textarea id="admMovieSynopsis" rows="4" style="width:100%"></textarea>
+
+        <div class="row" style="margin-top:10px;gap:10px;align-items:center">
+          <button id="admMovieCreate" type="button">Create</button>
+          <button id="admMovieRefresh" type="button">Refresh movies</button>
+          <div id="admMovieMsg" class="msg"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div style="font-weight:700">Movies</div>
+          <button id="admMoviesRefresh" type="button">Refresh</button>
+        </div>
+        <div id="admMoviesList" class="grid" style="margin-top:10px"></div>
+        <div id="admMoviesEmpty" class="muted hidden" style="margin-top:10px">No movies</div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="dlgAuth">
+    <form method="dialog" class="dlg">
+      <div class="dlgTop">
+        <div class="dlgTitle">Account</div>
+        <button class="link" value="cancel">Close</button>
+      </div>
+
+      <div class="tabs">
+        <button id="tabLogin" type="button" class="tab active">Login</button>
+        <button id="tabRegister" type="button" class="tab">Register</button>
+      </div>
+
+      <div id="paneLogin" class="pane">
+        <label>Email</label>
+        <input id="loginEmail" autocomplete="username" />
+        <label>Password</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" />
+        <div class="row">
+          <button id="btnLogin" type="button">Login</button>
+          <div id="loginMsg" class="msg"></div>
+        </div>
+      </div>
+
+      <div id="paneRegister" class="pane hidden">
+        <label>Email</label>
+        <input id="regEmail" />
+        <label>Password</label>
+        <input id="regPassword" type="password" />
+        <label>Full name</label>
+        <input id="regFullName" />
+        <label>Date of birth</label>
+        <input id="regDob" type="date" />
+        <label>Phone</label>
+        <input id="regTel" />
+        <div class="row">
+          <button id="btnRegister" type="button">Create account</button>
+          <div id="regMsg" class="msg"></div>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
